@@ -1,13 +1,29 @@
 import React,{useState} from 'react'
 import {assets} from '../assets/assets' 
 import  {motion} from 'framer-motion'
+import { useContext } from 'react'
+import { AppContext } from '../context/AppContext.jsx'
+
 export const Result = () => {
   const [image,setimage]=useState(assets.sample_img_1)
   const [isimageLoading,setisImageLoading]=useState(false)
   const [loading,setloading]=useState(false)
   const [input,setinput]=useState('')
-  const onSubmitHandler=async(e)=>{
+const {generateImage}=useContext(AppContext)
 
+  const onSubmitHandler=async(e)=>{
+    e.preventDefault();
+    setloading(true)
+    if(input){
+      const image=await  generateImage(input)
+      if(image){
+       setisImageLoading(true)
+
+        setimage(image)
+      }
+    }
+setloading(false)
+    
   }
   return (
     <motion.form
